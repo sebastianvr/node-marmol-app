@@ -1,6 +1,6 @@
 const {Schema, model} = require('mongoose');
 
-const usuarioShema =  Schema({
+const UsuarioShema =  Schema({
     nombre: {
         type: String,
         required: [true, 'El nombre es obligatorio' ]
@@ -36,6 +36,15 @@ const usuarioShema =  Schema({
     }
 
 });
+
+//sobreescribo un metodo para convertir y mostrar lo que deseo cuando lo llamo en controller
+UsuarioShema.methods.toJSON= function (){
+    //quito la contraseña y _v, envio el resto
+    const {__v, password, ...usuario} = this.toObject();
+    return usuario
+}
+
+
 //model('nombre de coleccion en singular', varModelo)
 //mongo al construir mi modelo agregará una s al final del nombre de la coleccion
-module.exports = model('Usuario', usuarioShema);
+module.exports = model('Usuario', UsuarioShema);

@@ -13,8 +13,8 @@ res.json({
 const usuarioPost = async (req = request, res = response) => {
 
     const { nombre, correo, password, telefono, 
-            estado = true, imagen='', rol , google } = req.body;
-            
+             estado = true, imagen='', rol , google } = req.body;
+    
     const usuario = new Usuario({nombre, correo, password, telefono, estado, imagen, rol, google});
    
     //encriptacion de password
@@ -24,12 +24,7 @@ const usuarioPost = async (req = request, res = response) => {
     await usuario.save();
 
     res.json({
-        nombre,
-        correo,
-        password,
-        telefono,
-        imagen,
-        rol
+        usuario
     });
 }
 
