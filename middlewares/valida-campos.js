@@ -10,13 +10,6 @@ const validarCampos = (req, res, next)=>{
     next();
 }
 
-// const exiteEmail = (req, res, next)=>{
-//     const correo = await usuario.findOne({correo});
-//     if(!correo)
-
-//     next();
-// }
-
 module.exports = {
     validarCampos,
 }
