@@ -11,7 +11,13 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
-        this.path = '/api/';
+        this.path = {
+            cliente : '/api/cliente',
+            fallecido : '/api/fallecido',
+            producto : '/api/producto',
+            trato : '/api/trato',
+            vendedor : '/api/vendedor'
+        };
 
         this.dbConnection();
 
@@ -25,7 +31,8 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.path, require('../routes/usuario.routes'));
+        // this.app.use(this.path, require('../routes/usuario.routes'));
+        this.app.use(this.path.cliente, require('../routes/cliente.routes'));
     }
 
     middlewares() {

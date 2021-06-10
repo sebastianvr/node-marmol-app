@@ -8,13 +8,12 @@ const ClienteSchema = Schema({
     },
     rut: {
         type: String,
-        required: false,
-        unique: true
+        default : ''
     },
     celular:{
         type: String,
         require: [true, 'El celular es obligatorio'],
-        unique: true
+        unique: false
     },
     correo: {
         type: String,
@@ -36,7 +35,7 @@ const ClienteSchema = Schema({
     idDifunto:{
         type: Schema.Types.ObjectId,
         ref: 'Difunto',
-        required: true
+        required: false
     }
 
 
