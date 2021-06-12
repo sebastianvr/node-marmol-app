@@ -13,7 +13,8 @@ const {
 const { 
     existeRut, 
     existeCorreo,
-    existeEstado
+    existeEstado,
+    esIdEliminado
 } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/valida-campos');
 
@@ -32,19 +33,22 @@ router.post('/', [
     check('contraseña', 'La contraseña es muy corta').isLength({ min: 6 }),
     validarCampos,
     
-    //Exite Email - Estado:true ? - Existe rut
-    //check('correo').custom(existeCorreo),
-    check('estado').custom(existeEstado),
+    //Exite Email - Existe rut
     check('rut').custom(existeRut),
-    validarCampos,
-
+    check('correo').custom(existeCorreo),
+    validarCampos
 ], postCliente);
 
 //Buscar todos los clientes
-router.get('/', [], getCliente);
+router.get('/:id', [
+    check('id', 'El id no es un id de mongo').isMongoId(),
+    validarCampos,
+    check('id').custom(esIdEliminado),
+    validarCampos
+], getCliente);
 
 //Buscar cliente por id
-router.get('/:id', [], getClientes);
+router.get('/', [], getClientes);
 
 //Actualizar cliente por id
 router.put('/:id', [], putCliente);
