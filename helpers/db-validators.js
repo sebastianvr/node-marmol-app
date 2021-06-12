@@ -36,15 +36,66 @@ const esIdEliminado = async (id = '') => {
     if (cliente) {
         throw new Error(`El id  ${id}  esta eliminado en la BD`);
 
-    }  
+    }
 }
 
-// const esIdEliminado = async () => {
-//     const cliente
-// }
+const tieneInicio = async (inicio) => {
+    //no viene en params
+    if (inicio === undefined) {
+        return
+    }
+
+    if (inicio === '') {
+        throw new Error('El params inicio esta vacio');
+    }
+
+    //inicio no es un numero
+    if (isNaN(inicio)) {
+        throw new Error('El params inicio no es correcto');
+    }
+
+}
+
+const tieneLimite = async (limite) => {
+
+    //no viene en params
+    if (limite === undefined) {
+        return
+    }
+
+    if (limite === '') {
+        throw new Error('El params limite esta vacio');
+    }
+
+    //limite no es un numero
+    if (isNaN(limite)) {
+        throw new Error('El params limite no es correcto');
+    }
+}
+
+const existeCliente = async (id) => {
+    const cliente = await Cliente.findById(id);
+
+    if (!cliente) {
+        throw new Error('No existe cliente con este id');
+    }
+
+
+}
+
+const esClienteEliminado = async (id) => {
+    const cliente = await Cliente.findById(id).where({ estado: false });
+    if (cliente) {
+        throw new Error(`El cliente esta eliminado de la BD`);
+    }
+}
 
 module.exports = {
     existeRut,
     existeCorreo,
-    esIdEliminado
+    esIdEliminado,
+    tieneInicio,
+    tieneLimite,
+    existeCliente,
+    esClienteEliminado
 }

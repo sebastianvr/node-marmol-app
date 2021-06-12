@@ -13,9 +13,13 @@ const {
 const { 
     existeRut, 
     existeCorreo,
-    existeEstado,
-    esIdEliminado
+    esIdEliminado,
+    tieneInicio,
+    tieneLimite,
+    existeCliente,
+    esClienteEliminado
 } = require('../helpers/db-validators');
+
 const { validarCampos } = require('../middlewares/valida-campos');
 
 const router = Router();
@@ -43,15 +47,32 @@ router.post('/', [
 router.get('/:id', [
     check('id', 'El id no es un id de mongo').isMongoId(),
     validarCampos,
+    
     check('id').custom(esIdEliminado),
     validarCampos
 ], getCliente);
 
 //Buscar cliente por id
-router.get('/', [], getClientes);
+//TODO: validar al no ingresar nada, que no me devuelva todos los datos
+
+router.get('/', [
+    check('inicio').custom(tieneInicio),
+    check('limite').custom(tieneLimite),
+    validarCampos
+], getClientes);
 
 //Actualizar cliente por id
-router.put('/:id', [], putCliente);
+router.put('/:id', [
+    check('id', 'El id no es un id de mongo').isMongoId(),
+    validarCampos,
+
+    //existe usuario - usuario estado : true ?
+    check('id').custom(existeCliente),
+    check('id').custom(esClienteEliminado),
+    validarCampos
+
+    
+], putCliente);
 
 //Eliminar cliente por id
 router.delete('/:id', [], deleteCliente);

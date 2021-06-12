@@ -9,7 +9,6 @@ const postCliente = async (req, res = response) => {
     try {
 
         const cliente = new Cliente({ nombre, contraseña, celular, correo, ...resto });
-        //console.log(cliente)
 
         //Encriptar contraseña
         const salt = bcryptjs.genSaltSync();
@@ -52,43 +51,42 @@ const getCliente = async (req, res = response) => {
     } catch (error) {
         res.status(500).json({
             error
-        })
+        });
     }
 }
 
-const getClientes = async(req, res = response) => {
-    // comprobar que inicio y limite son numeros!!!
-
-    const { inicio = 5, limite = 0 } = req.query;
-
-
+const getClientes = async (req, res = response) => {
+    const { inicio = 0, limite = 5 } = req.query;
     const estado = { estado: true };
 
     const [total, clientes] = await Promise.all([
         Cliente.countDocuments(estado),
         Cliente.find(estado)
-            .populate('usuario','nombre')
+            .populate('usuario', 'nombre')
             .limit(Number(limite))
             .skip(Number(inicio)),
-    ])
+    ]);
 
     return res.status(200).json({
         total,
         clientes
-
     });
 }
 
 const putCliente = (req, res = response) => {
+    const { id } = req.params;
+    const { nombre, contraseña, celular, correo } = req.body;
+
     res.json({
+        nombre, contraseña, celular, correo,
         msg: 'Desde putCliente'
-    })
+    });
 }
 
 const deleteCliente = (req, res = response) => {
     res.json({
         msg: 'Desde deleteCliente'
-    })
+    });
 }
 
 
